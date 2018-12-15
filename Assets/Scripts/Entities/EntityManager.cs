@@ -11,7 +11,7 @@ public class EntityManager : MonoBehaviour {
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         if (instance == null)
             instance = this;

@@ -30,7 +30,10 @@ public class EffectZoneInstant : EffectZone {
         if (CheckHitTargets(target) == false)
             return;
 
-        parentEffect.Apply(target);
+        if (parentEffect != null)
+            parentEffect.Apply(target);
+        else
+            Debug.LogError("This effect zone: " + gameObject.name + " has no parent effect");
     }
 
 

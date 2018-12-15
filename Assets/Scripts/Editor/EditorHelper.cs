@@ -1297,13 +1297,13 @@ public static class EditorHelper {
         if (Application.isPlaying)
             return;
 
-        if (PrefabUtility.GetPrefabObject(script.gameObject) == null) {
+        if (PrefabUtility.GetPrefabInstanceHandle(script.gameObject) == null) {
             EditorGUILayout.HelpBox("We do not appear to be based upon a prefab. " + "Updating this object will require manual adjustements for any future changes.", MessageType.Warning);
         }
     }
 
     public static bool IsPrefab(Object target) {
-        return PrefabUtility.GetPrefabObject(target) != null;
+        return PrefabUtility.GetPrefabInstanceHandle(target) != null;
     }
 
     /// <summary>
@@ -1561,10 +1561,16 @@ public static class EditorHelper {
     }
 
     public static GameObject AddNewChild(GameObject parent, string newName = "Child") {
-        if (PrefabUtility.GetPrefabType(parent) == PrefabType.Prefab) {
+
+        PrefabAssetType type = PrefabUtility.GetPrefabAssetType(parent);
+
+        //if (PrefabUtility.GetPrefabType(parent) == PrefabType.Prefab) {
+        //    return AddNewChildToPrefab(parent, newName);
+        //}
+        if (type == PrefabAssetType.Regular)
             return AddNewChildToPrefab(parent, newName);
-        }
-        else {
+        else
+        {
             GameObject newGo = new GameObject(newName);
             newGo.transform.parent = parent.transform;
             return newGo;
@@ -1604,8 +1610,12 @@ public static class EditorHelper {
         // Attach the new GO to the prefab instance
         newChild.transform.parent = instancedParent.transform;
 
+        GameObject corospondingObject = PrefabUtility.GetCorrespondingObjectFromOriginalSource(prefabInstance);
+
         // Update actual prefab
-        PrefabUtility.ReplacePrefab(prefabInstance, PrefabUtility.GetCorrespondingObjectFromSource(prefabInstance), ReplacePrefabOptions.ConnectToPrefab);
+        //PrefabUtility.ReplacePrefab(prefabInstance, corospondingObject, ReplacePrefabOptions.ConnectToPrefab);
+
+        PrefabUtility.SavePrefabAsset(corospondingObject);
 
         // Get the actual child under the updated prefab (not the one that will get destroyed)
         GameObject prefabChild = PrefabUtility.GetCorrespondingObjectFromSource(newChild) as GameObject;
@@ -1618,7 +1628,7 @@ public static class EditorHelper {
     }
 
     public static bool RemoveChild(GameObject child) {
-        if (PrefabUtility.GetPrefabType(child.transform.root) == PrefabType.Prefab) {
+        if (PrefabUtility.GetPrefabAssetType(child.transform.root) == PrefabAssetType.Regular) {
             return RemoveChildFromPrefab(child);
         }
         else {
@@ -1664,7 +1674,8 @@ public static class EditorHelper {
             GameObject.DestroyImmediate(instanceChild);
 
             // Update actual prefab
-            PrefabUtility.ReplacePrefab(prefabInstance, PrefabUtility.GetCorrespondingObjectFromSource(prefabInstance), ReplacePrefabOptions.ConnectToPrefab);
+            //PrefabUtility.ReplacePrefab(prefabInstance, PrefabUtility.GetCorrespondingObjectFromSource(prefabInstance), ReplacePrefabOptions.ConnectToPrefab);
+            PrefabUtility.SavePrefabAsset(PrefabUtility.GetCorrespondingObjectFromSource(prefabInstance));
 
             // Get rid of prefab instance
             GameObject.DestroyImmediate(prefabInstance);
@@ -1680,7 +1691,7 @@ public static class EditorHelper {
     }
 
     public static bool RemoveComponent(Component child) {
-        if (PrefabUtility.GetPrefabType(child.transform.root) == PrefabType.Prefab) {
+        if (PrefabUtility.GetPrefabAssetType(child.transform.root) == PrefabAssetType.Regular) {
             return RemoveComponentFromPrefab(child);
         }
         else {
@@ -1717,7 +1728,8 @@ public static class EditorHelper {
             GameObject.DestroyImmediate(instanceChild);
 
             // Update actual prefab
-            PrefabUtility.ReplacePrefab(prefabInstance, PrefabUtility.GetCorrespondingObjectFromSource(prefabInstance), ReplacePrefabOptions.ConnectToPrefab);
+            //PrefabUtility.ReplacePrefab(prefabInstance, PrefabUtility.GetCorrespondingObjectFromSource(prefabInstance), ReplacePrefabOptions.ConnectToPrefab);
+            PrefabUtility.SavePrefabAsset(PrefabUtility.GetCorrespondingObjectFromSource(prefabInstance));
 
             // Get rid of prefab instance
             GameObject.DestroyImmediate(prefabInstance);
