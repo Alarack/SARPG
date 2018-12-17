@@ -23,9 +23,6 @@ public static class ProjectileFactory {
             spawnPoint = source.transform.position;
         }
 
-
-        Debug.Log(spawnRot.eulerAngles + " is rot");
-
         Projectile loadedProjectile = LoadAndSpawnProjectile(info.prefabName, spawnPoint, spawnRot);
 
         if (loadedProjectile == null)

@@ -54,7 +54,8 @@ public class PlayerAbilitySlot : MonoBehaviour, IPointerClickHandler
         switch (eventData.button)
         {
             case PointerEventData.InputButton.Left:
-                ability.Activate();
+                if(ability != null)
+                    ability.Activate();
                 break;
 
             case PointerEventData.InputButton.Right:
