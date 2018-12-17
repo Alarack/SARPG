@@ -10,18 +10,23 @@ public static class ProjectileFactory {
     public static Projectile CreateProjectile(ProjectileInfo info, Constants.EffectOrigin location, GameObject source, int currentProjectile = 0)
     {
         Vector3 spawnPoint;
+        Quaternion spawnRot = Quaternion.identity;
 
         if (location != Constants.EffectOrigin.MousePointer)
         {
             Transform point = source.Entity().effectDelivery.GetOriginPoint(location);
             spawnPoint = point.position;
+            spawnRot = point.rotation;
         }
         else
         {
             spawnPoint = source.transform.position;
         }
 
-        Projectile loadedProjectile = LoadAndSpawnProjectile(info.prefabName, spawnPoint, Quaternion.identity);
+
+        Debug.Log(spawnRot.eulerAngles + " is rot");
+
+        Projectile loadedProjectile = LoadAndSpawnProjectile(info.prefabName, spawnPoint, spawnRot);
 
         if (loadedProjectile == null)
             return null;
@@ -60,15 +65,17 @@ public static class ProjectileFactory {
 
     private static Projectile LoadAndSpawnProjectile(string prefabName, Vector3 spawnPoint, Quaternion spawnRotation)
     {
-        Projectile loadedPrefab = Resources.Load("Projectiles/" + prefabName) as Projectile;
+        //Projectile loadedPrefab = Resources.Load("Projectiles/" + prefabName) as Projectile;
 
-        if(loadedPrefab == null)
+        GameObject loadedPrefab = Resources.Load("Projectiles/" + prefabName) as GameObject;
+
+        if (loadedPrefab == null)
         {
-            Debug.LogError("Could not load projectile");
+            Debug.LogError("Could not load projectile: " + prefabName);
             return null;
         }
 
-        return SpawnProjectile(loadedPrefab, spawnPoint, spawnRotation);
+        return SpawnProjectile(loadedPrefab.GetComponent<Projectile>(), spawnPoint, spawnRotation);
 
     }
 

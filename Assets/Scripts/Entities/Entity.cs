@@ -19,6 +19,9 @@ public class Entity : MonoBehaviour {
     public int EntityID { get; private set; }
     public EntityAnimationManager AnimationManager { get; private set; }
 
+    //[Header("Abilities")]
+    public AbilityManager AbilityManager { get; protected set; }
+
 
     private NavMeshAgent navAgent;
 
@@ -29,6 +32,9 @@ public class Entity : MonoBehaviour {
         navAgent = GetComponent<NavMeshAgent>();
         Animator = GetComponent<Animator>();
         AnimationManager = GetComponentInChildren<EntityAnimationManager>();
+        AbilityManager = GetComponent<AbilityManager>();
+        
+
 
         if (AnimationManager != null)
             AnimationManager.Initialize(Animator, this);
@@ -40,6 +46,9 @@ public class Entity : MonoBehaviour {
     {
         Register();
         InitStats();
+
+        if (AbilityManager != null)
+            AbilityManager.Initialize(gameObject);
 
     }
 
@@ -65,19 +74,12 @@ public class Entity : MonoBehaviour {
     #endregion
 
 
-
-
-
-
     #region EVENTS
-
 
     private void OnStatChanged(BaseStat.StatType type, GameObject cause)
     {
         //Local Event
         UpdateNavAgent(type);
-
-
 
         //Global Event
         EventData data = new EventData();

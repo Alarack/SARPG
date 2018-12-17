@@ -30,6 +30,7 @@ public class Ability {
 
     protected float procChance = 1f;
     protected AbilityData abilityData;
+    protected Timer useTimer;
 
     #region CONSTRUCTION
 
@@ -41,7 +42,7 @@ public class Ability {
         EffectManager = new EffectManager(this);
         RecoveryManager = new AbilityRecoveryManager(this);
 
-
+        useTimer = new Timer("Use Timer", UseDuration, true, PopUseTimer);
         SetUpAbilityData();
 
         
@@ -56,6 +57,7 @@ public class Ability {
         ProcChance = abilityData.procChance;
         OverrideOtherAbilities = abilityData.overrideOtherAbilities;
 
+        
         CreateEffects();
         CreateRecoveryMethods();
     }
@@ -86,6 +88,8 @@ public class Ability {
     {
         RegisterListeners();
         Equipped = true;
+
+        Debug.Log(abilityName + " has been equipped");
     }
 
     public void Unequip()
@@ -93,6 +97,8 @@ public class Ability {
         UnregisterListeners();
         Equipped = false;
         Deactivate();
+
+        Debug.Log(abilityName + " has been unequipped");
     }
 
     #region ACTIVATORS SETUP
@@ -190,6 +196,15 @@ public class Ability {
             currentMethod.ManagedUpdate();
 
         }
+
+        if (useTimer != null && InUse)
+            useTimer.UpdateClock();
+    }
+
+
+    private void PopUseTimer()
+    {
+        InUse = false;
     }
 
     #endregion
@@ -243,6 +258,8 @@ public class Ability {
             return false;
 
         EffectManager.ActivateAllEffects();
+        InUse = true;
+        Debug.Log(abilityName + " has been activated");
 
         return true;
     }
@@ -250,6 +267,7 @@ public class Ability {
     public void Deactivate()
     {
         EffectManager.DeactivateAllEffects();
+        InUse = false;
     }
 
     private bool ProcRoll()

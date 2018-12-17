@@ -8,7 +8,7 @@ public abstract class AbilityRecovery {
     public Constants.AbilityRecoveryType type;
 
     public Ability ParentAbility { get { return parentAbility; } protected set { parentAbility = value; } }
-    public bool IsReady { get; protected set; }
+    //public bool IsReady { get; protected set; }
 
     [System.NonSerialized]
     protected AbilityRecoveryManager manager;
@@ -19,12 +19,12 @@ public abstract class AbilityRecovery {
 
     public AbilityRecovery()
     {
-        IsReady = true;
+        //IsReady = true;
     }
 
     public AbilityRecovery(Ability parentAbility, AbilityRecoveryManager manager)
     {
-        IsReady = true;
+        //IsReady = true;
         this.ParentAbility = parentAbility;
         this.manager = manager;
     }
@@ -33,13 +33,15 @@ public abstract class AbilityRecovery {
 
     public virtual void BeginRecovery()
     {
-        IsReady = false;
+        //IsReady = false;
     }
 
     public virtual void Refresh()
     {
         manager.RecoverCharge();
-        IsReady = true;
+        //IsReady = true;
+
+        //Debug.Log("Refreshing a charge");
     }
 
     public abstract void Recover();

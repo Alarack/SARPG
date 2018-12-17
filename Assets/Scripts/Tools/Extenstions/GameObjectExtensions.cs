@@ -18,6 +18,12 @@ public static class GameObjectExtensions {
         if (projectile != null)
             result = projectile.ProjectileStats;
 
+
+        if(result == null)
+        {
+            Debug.LogError(go.name + " has no stats");
+        }
+
         return result;
     }
 

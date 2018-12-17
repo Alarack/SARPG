@@ -22,16 +22,16 @@ MonoBehaviour:
     activationTime: 0
     activaionTimer:
       timerName: 
-  abilityIcon: {fileID: 0}
+  abilityIcon: {fileID: 21300000, guid: a889b8fcede789d41bd5589c367271ad, type: 3}
   useDuration: 0.5
   procChance: 1
   overrideOtherAbilities: 0
   effectData:
-  - effectName: 
+  - effectName: Fire Damage
     riderTarget: 
-    tags: 
+    tags: 1600000001000000
     effectOrigin: 5
-    deliveryMethod: 0
+    deliveryMethod: 2
     effectType: 1
     durationType: 0
     statusTypeInfo:
@@ -42,14 +42,14 @@ MonoBehaviour:
       maxStacks: 0
       statusType: 0
     projectileInfo:
-      prefabName: 
+      prefabName: Fireball
       spreadType: 0
-      projectileCount: 0
-      error: 0
+      projectileCount: 1
+      error: 5
       burstDelay: 0
     effectZoneInfo:
       shape: 0
-      size: 0
+      size: 3
       durationType: 0
       duration: 0
       interval: 0
@@ -59,9 +59,12 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 2048
     adjInfo:
-      adjustmentValue: 0
-      targetStat: 0
+      adjustmentValue: -5
+      targetStat: 1
       modType: 0
-      permanent: 0
+      permanent: 1
       options: 
-  recoveryData: []
+  recoveryData:
+  - type: 1
+    cooldown: 1
+    kills: 0

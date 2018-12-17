@@ -46,6 +46,7 @@ public class Projectile : MonoBehaviour {
     public void Initialize(Effect parent)
     {
         payloadZoneInfo = parent.effectZoneInfo;
+        parentEffect = parent;
         Mask = parent.layerMask;
         SetUpStats();
     }
@@ -113,7 +114,7 @@ public class Projectile : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        myBody.velocity = Vector3.forward * maxSpeed * Time.deltaTime;
+        myBody.velocity = transform.forward * maxSpeed * Time.deltaTime;
     }
 
 

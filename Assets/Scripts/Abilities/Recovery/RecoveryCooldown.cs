@@ -17,7 +17,7 @@ public class RecoveryCooldown : AbilityRecovery {
         Stats = new StatCollection(ParentAbility.Source, OnStatChanged);
         Stats.AddStat(BaseStat.StatType.CoolDown, cooldown);
 
-        coolDownTimer = new Timer("Cooldown", cooldown, false, Refresh);
+        coolDownTimer = new Timer("Cooldown", cooldown, true, Refresh);
     }
 
 
@@ -29,8 +29,13 @@ public class RecoveryCooldown : AbilityRecovery {
 
     public override void Recover()
     {
-        if (IsReady == false && manager.Charges < manager.MaxCharges)
+        if (manager.Charges < manager.MaxCharges)
+        {
+            //Debug.Log(manager.Charges + " are my charges");
+
             coolDownTimer.UpdateClock();
+        }
+
     }
 
     public override void ManagedUpdate()
